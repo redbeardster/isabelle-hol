@@ -68,7 +68,14 @@ record MsgStatus =
 
 datatype 'msg event = Broadcast 'msg | Deliver 'msg
 
+consts always_10 :: "'a \<Rightarrow> nat"
 
+axiomatization  where
+Always_10:
+  "\<forall>x. always_10 x = 10"
+
+lemma "\<forall>x. always_10 x \<le> 20"
+  by (simp add: Always_10) 
 
 
 
