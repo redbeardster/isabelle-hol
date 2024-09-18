@@ -1,1 +1,1 @@
-Some notes for Isabelle/HOL
+1. "ConcreteSemantics" book - http://www.concrete-semantics.org/springer.html
