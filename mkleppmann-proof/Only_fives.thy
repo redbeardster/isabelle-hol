@@ -1,5 +1,5 @@
 theory
-  Only_Fives
+  Only_fives
 imports
   Main
 begin
@@ -28,3 +28,4 @@ next
 qed
 
 end
+
