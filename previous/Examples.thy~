@@ -1,0 +1,4 @@
+theory Examples
+  imports "../IMP2"
+begin
+end
