@@ -27,9 +27,5 @@ next
     using only_fives.intros(2) by fastforce
 qed
 
-
-
-
-
 end
 
