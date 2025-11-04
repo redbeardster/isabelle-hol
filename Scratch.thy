@@ -1,8 +1,8 @@
 theory Scratch 
-  imports Main
+  imports Main 
 begin
 
-(*
+
 datatype PRSObject = Rock | Scissors | Paper
 
 fun beats :: " PRSObject \<Rightarrow>  PRSObject" 
@@ -21,18 +21,96 @@ fun beaten :: "PRSObject \<Rightarrow> PRSObject" where
 lemma "beats (beaten x :: PRSObject) = x"
   by (metis PRSObject.distinct(1) PRSObject.distinct(3) PRSObject.distinct(5) beaten.elims beats.elims)
 
+fun list_to_option :: "'a list \<Rightarrow> 'a option"
+where
+"list_to_option [x] = Some x"
+| "list_to_option _ = None"
 
+thm list_to_option.cases
+list_to_option.simps
+
+lemma lto: "list_to_option [] = None"
+  by simp
+
+lemma single_val: "list_to_option xs = Some x \<Longrightarrow>  length(xs) = 1"
+  by (metis One_nat_def length_0_conv length_Cons list_to_option.elims not_Some_eq)
+
+(*
+proof (induction rule: list_to_option.cases)
+  case ( )
+  then show ?case sorry
+next
+  case "2_1"
+  then show ?case sorry
+next
+  case ("2_2" v vb vc)
+  then show ?case sorry
+qed *)
+
+thm list_to_option.elims
+
+fun_cases list_to_option_SomeE[elim]: "list_to_option xs = Some y"
+thm list_to_option_SomeE
+
+lemma "list_to_option xs = y \<Longrightarrow> P"
+proof (erule list_to_option.elims)
+fix x assume "xs = [x]" "y = Some x" thus P sorry
+next
+assume "xs = []" "y = None" thus P sorry
+next
+fix a b xs' assume "xs = a # b # xs'" "y = None" thus P sorry
+qed
+
+
+(* lemma "(case xs of [] \<Rightarrow> [] | y#ys \<Rightarrow> xs) = xs"
+  apply (case_tac xs)
+   apply auto
+  done
+ *)
+
+lemma "(case xs of [] \<Rightarrow> zs | y#ys \<Rightarrow> y#(ys@zs)) = xs@zs"
+  apply(split list.split)
+  apply(simp)
+done
+
+lemma "(xs@ys) @ zs = xs @ (ys@zs)"
+  apply (induction xs)
+  apply auto
+  done
+
+primrec itrev :: "'a list \<Rightarrow> 'a list \<Rightarrow> 'a list" where
+"itrev [] ys = ys" |
+"itrev (x#xs) ys = itrev xs (x#ys)"
+
+lemma "\<forall> ys. itrev xs ys = rev xs @ ys"
+  apply(induct_tac xs, simp_all)
+  done
+
+
+lemma "xs \<noteq> [] \<longrightarrow> hd(rev xs) = last xs"
+apply(induct_tac xs)
+   apply auto
+  done
+
+lemma some_lemma[simp]:
+fixes A :: "bool" (*"A" has type "bool"*)
+assumes AnA: "A \<and> A" (*give the name "AnA"*)
+shows "A"
+  using AnA by simp
+
+
+
+
+
+(*
 typedef Clock_value = "{0::nat,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}"
   by blast
-
 
 fun length :: "'a list \<Rightarrow> nat " where 
   "length [] = 0"
   | "length (x#xs) =  1 + length xs"
 
 value "length [1::nat,2,3]"
-
-
 
 type_synonym T = nat
 
